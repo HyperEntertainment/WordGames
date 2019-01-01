@@ -16,12 +16,18 @@ namespace WordGames
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
+            bundles.Add(new ScriptBundle("~/bundles/WordDrop").Include(
+                      "~/Scripts/WordDrop/WordDrop.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+            bundles.Add(new StyleBundle("~/Content/WordDrop").Include(
+                      "~/Content/WordDrop/WordDrop.css"));
         }
     }
 }

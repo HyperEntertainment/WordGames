@@ -14,5 +14,12 @@ namespace WordGames.Controllers
 
             return View();
         }
+
+        public ActionResult WordDrop()
+        {
+            ViewBag.Title = "WordDrop!";
+
+            return View();
+        }
     }
 }
