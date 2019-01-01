@@ -5,6 +5,7 @@ var ctx = null;
 var width;
 var height;
 var ws = null; 
+var serverConnected = false;
 var timerId;
 var frame = 0;
 
@@ -46,6 +47,10 @@ function draw()
 
 function keydown(evt)
 {
+    if(!serverConnected){
+        return true;
+    }
+
     if(evt.key.length==1){
         typeText += evt.key;
         drawTyping();
@@ -58,6 +63,7 @@ function keydown(evt)
     }
     else if(evt.key == 'Enter'){
         // do something with it?
+        ws.send(typeText);
 
         typeText = "";
         drawTyping();
@@ -90,11 +96,21 @@ function init()
     ctx.font = "30px Arial";
     ctx.textBaseline = 'top';
 
-    var ws = new WebSocket("ws://localhost:8765/echo");
+    ws = new WebSocket("ws://localhost:8765/echo");
         
     ws.onopen = function() {
-       // Web Socket is connected, send data using send()
-       ws.send("I sent asdf");
+        // connected to game server
+        // ... ready to go
+        serverConnected = true;
+    };
+
+    ws.onclose = function() { 
+        // websocket is closed.
+        console.log("Connection closed");
+
+        // ?? what to do when server connection is severed
+        ws = null;
+        serverConnected = false;
     };
     
     ws.onmessage = function (evt) { 
@@ -102,14 +118,7 @@ function init()
        console.log("Recieved",msg);
     };
     
-    ws.onclose = function() { 
-       // websocket is closed.
-       console.log("Connection closed");
-    };
-
-    //document.onkeypress
     document.onkeydown = keydown;
-
     timerId = setInterval(interval,2000);
 
     //console.log("end init()");
